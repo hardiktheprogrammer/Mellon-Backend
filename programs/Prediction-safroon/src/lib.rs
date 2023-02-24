@@ -19,8 +19,12 @@ pub fn create_bet(
     amount:u64, // amount of the be4t 
     price:f64, // price of the bet
     duration:u32,// seconds
-    pyth_price_key, Pubkey
+    pyth_price_key, Pubkey   // Pubkey 
 )  -> Result<()> {
+
+
+
+}
 
     let master = &mut ctx.accounts.master
     let bet = &mut  ctx.accounts.bet
@@ -43,7 +47,7 @@ pub fn create_bet(
 
 }
 
-}
+
 
     #[derive(Accounts)] // Account stuct
     pub struct CreateMaster<'info> {
