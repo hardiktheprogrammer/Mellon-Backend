@@ -1,8 +1,9 @@
 mod constants;
 mod state;
+mod utils;
 // use crate::state::*;
 use anchor_lang::{prelude::*, system_program};
-use crate::{constants::*, state::*};
+use crate::{constants::*, state::*,utils::*};
 use pyth_sdk_solana::load_price_feed_from_account_info;
 
 declare_id!("FKF4YPNCtJjYqwUZwxLDCQjUuPJDGE1v8syc3Hj4nK1s");
@@ -19,7 +20,10 @@ pub fn create_bet(
     amount:u64, // amount of the be4t 
     price:f64, // price of the bet
     duration:u32,// seconds
-    pyth_price_key, Pubkey   // Pubkey 
+pyth_price_key, Pubkey  // Pubkey 
+
+
+
 )  -> Result<()> {
 
 
@@ -60,6 +64,10 @@ pub fn create_bet(
 
 
     Ok(())
+    }
+
+    pub fn enter _bet(ctx,price) -> Result<()> {
+
     }
 
 
