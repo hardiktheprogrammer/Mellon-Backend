@@ -24,10 +24,10 @@ pub fn create_bet(
 
 
 
-}
 
-    let master = &mut ctx.accounts.master
-    let bet = &mut  ctx.accounts.bet
+
+    let master = &mut ctx.accounts.master;
+    let bet = &mut  ctx.accounts.bet;
 
     // Increase the Least id on Each bet Creation on the water
 
@@ -36,20 +36,39 @@ pub fn create_bet(
     bet.id = master.last_bet_id;
     bet.pyth_price_key = pyth_price_key;
     bet.amount = bet.amount;
-    bet.expiryts = get_unix_timestamp() + duration on i64; // duration of the bet 
+    bet.expiry_ ts = get_unix_timestamp() + duration on i64;   // duration of the bet 
     bet.prediction_a = BetPrediction {
-        Player:ctx.account.player.key(),
-
+        Player:ctx.accounts.player.key(), // player account name for the prediction 
+ 
         price,
 
+
+    };
+// winner 
+// Transfer the amount to the Bet PDA
+    system_program::transfer(   // transfer the amount to the bet PDA
+        CpiContext::new(
+            ctx.accounts.systems_program.to_account_info(), // info putting the player solana on the bet PDA 
+            system_program::Transfer{
+                from:ctx.accounts.player.to_account_info(),
+                to: btx.to_account_info() // 
+            },
+        ),
+
+        bet.amount,
+    )?;
+
+
+    Ok(())
     }
 
 
-}
+
+}       
 
 
 
-    #[derive(Accounts)] // Account stuct
+    #[derive(Accounts)] // Account struct
     pub struct CreateMaster<'info> {
         #[account(
             init,
