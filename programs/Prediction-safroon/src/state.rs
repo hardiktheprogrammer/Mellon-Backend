@@ -20,12 +20,12 @@ pub struct Bet {
 #[derive(Clone, AnchorSerialize, AnchorDeserialize)]
 
 pub struct BettingPrediction {
-    pub player: Pubkey, // Player
+    pub player: Pubkey, // The address of the Bet
 
     pub price: f64, // Price of the bet that has been created
 }
 
-#[derive(Clone, AnchorDeserialize, AnchorSerialize, AnchorDeserialize)]
+#[derive(Clone, AnchorDeserialize, AnchorSerialize, PartialEq)]
 
 pub enum BetState {
     Created,
