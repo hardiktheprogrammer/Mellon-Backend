@@ -12,7 +12,7 @@ pub struct Bet {
     pub amount: u64,                             // Beting amount wroth
     pub prediction_a: BettingPrediction,         // take prediction from the bet creator
     pub prediction_b: Option<BettingPrediction>, // an Option
-    pub expire_ts: i64,                          // expiration time of the bet that has beee created
+    pub expiry_ts: i64,                          // expiration time of the bet that has beee created
     pub state: BetState,
     pub pyth_price_key: Pubkey, // Bet becomes the price of the bet
 }
