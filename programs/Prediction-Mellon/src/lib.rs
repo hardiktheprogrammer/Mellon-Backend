@@ -55,9 +55,9 @@ pub mod prediction_contract {
         Ok(())
     }
 
-    // pub fn enter_bet(ctx,price) -> Result<()> {
+    //  pub fn enter_bet(ctx,price) -> Result<()> { // enter the bet and the price
 
-    // }
+    //  }
 }
 
 #[derive(Accounts)] // Account struct
@@ -83,7 +83,8 @@ pub struct CreateBet<'info> {
 
         init,
         payer=player,
-        space=8+8+32+8+8+32+8+1+32+8+1
+        space=8+8+32+8+8+32+8+1+32+8+1,
+        // seeds=[BET_SEED, last_bet_id ]
     )]
     pub bet: Account<'info, Bet>, // Bet Account
 
@@ -95,3 +96,14 @@ pub struct CreateBet<'info> {
 
     pub system_program: Program<'info, System>, // System program
 }
+
+/*  #[derive(Accounts)]
+
+ pub struct EnterBet<'info> {
+     #[account(
+        mut,
+    )]
+ }
+*/
+
+dd
