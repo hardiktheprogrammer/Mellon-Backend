@@ -105,5 +105,3 @@ pub struct CreateBet<'info> {
     )]
  }
 */
-
-dd
