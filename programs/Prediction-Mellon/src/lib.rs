@@ -25,13 +25,13 @@ pub mod prediction_contract {
         let master = &mut ctx.accounts.master;
         let bet = &mut ctx.accounts.bet;
 
-        // Increase the Least id on Each bet Creation on the water
+        // Increase the Lea t id on Each bet Creation on the water
 
-        master.last_bet_id += 1;
+        master.last_bet_id += 1; // last bet id 
 
         bet.id = master.last_bet_id;
         bet.pyth_price_key = pyth_price_key;
-        bet.amount = bet.amount;
+        bet.amount = amount;
         bet.expiry_ts = get_unix_timestamp() + duration as i64; // duration of the bet
         bet.prediction_a = BettingPrediction {
             player: ctx.accounts.player.key(), // player account name for the prediction
@@ -44,10 +44,10 @@ pub mod prediction_contract {
             // transfer the amount to the bet PDA
             CpiContext::new(
                 ctx.accounts.system_program.to_account_info(), // info putting the player solana on the bet PDA
-                system_program::Transfer {
+                system_program::Transfer { 
                     from: ctx.accounts.player.to_account_info(),
                     to: bet.to_account_info(), //
-                },
+                },  
             ),
             bet.amount,
         )?;
@@ -55,9 +55,9 @@ pub mod prediction_contract {
         Ok(())
     }
 
-    //  pub fn enter_bet(ctx,price) -> Result<()> { // enter the bet and the price
+      pub fn enter_bet(ctx,price) -> Result<()> { // enter the bet and the price
 
-    //  }
+      }
 }
 
 #[derive(Accounts)] // Account struct
@@ -84,7 +84,8 @@ pub struct CreateBet<'info> {
         init,
         payer=player,
         space=8+8+32+8+8+32+8+1+32+8+1,
-        // seeds=[BET_SEED, last_bet_id ]
+        seeds=[BET_SEED, &(master.last_bet_id + 1).to_le_bytes() ],
+        bump
     )]
     pub bet: Account<'info, Bet>, // Bet Account
 
@@ -97,11 +98,26 @@ pub struct CreateBet<'info> {
     pub system_program: Program<'info, System>, // System program
 }
 
-/*  #[derive(Accounts)]
+ #[derive(Accounts)]
 
  pub struct EnterBet<'info> {
      #[account(
         mut,
+        SEEDS=[BET_SEED,&bet.id.to_le_bytes()], // bets seeds are the bet seed bytes 
+        bump,
+        constraint= validate_enter_bet(&*bet) @ BetError::CannotEnter       // constraints and if  someone enter another bet is not allowed 
+    
+    
+    
     )]
+
+    pub bet: Account<'info,Bet>,
+
+    #[account(mut)]
+    pub player: Signer<'info>, //  Player Signer for this account
+
+    pub system_program: Program<'info,System>, // system program  
+
+
  }
-*/
+
