@@ -1,8 +1,9 @@
 mod constants;
 mod state;
 mod utils;
+mod error;
 // use crate::state::*;
-use crate::{constants::*, state::*, utils::*};
+use crate::{constants::*, state::*, utils::*,error::*};
 use anchor_lang::{prelude::*, system_program};
 use pyth_sdk_solana::load_price_feed_from_account_info;
 
