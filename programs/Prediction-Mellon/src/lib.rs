@@ -56,8 +56,10 @@ pub mod prediction_contract {
         Ok(())
     }
 
-      pub fn enter_bet(ctx,price) -> Result<()> { // enter the bet and the price
+      pub fn enter_bet(ctx:Context<EnterBet>,price: f64) -> Result<()> { // enter the bet and the price
 
+
+        let bet = &mut ctx.accounts.bet;
       }
 }
 

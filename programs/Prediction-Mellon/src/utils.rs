@@ -10,5 +10,6 @@ pub fn get_unix_timestamp() -> UnixTimestamp {
 }
 
 pub fn validate_enter_bet(bet: &Bet) -> boot {
-    bet.prediction_b.is_none() && (bet.expiry_ts - )
+    bet.prediction_b.is_none()
+        && (bet.expiry_ts - MINIMUM_REMAINING_TIME_UNTIL_EXPIRY > get_unix_timestamp())
 }
