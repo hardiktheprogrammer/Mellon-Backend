@@ -117,7 +117,7 @@ pub struct CreateBet<'info> {
     #[account(mut)]
     pub player: Signer<'info>, //  Player Signer for this account
 
-    pub system_program: Program<'info,System>, // system program  
+    pub system_program: Program<'info,System> // system program  
 
 
  }
