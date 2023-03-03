@@ -59,8 +59,12 @@ pub mod prediction_contract {
       pub fn enter_bet(ctx:Context<EnterBet>,price: f64) -> Result<()> { // enter the bet and the price
 
 
-        let bet = &mut ctx.accounts.bet;
-        let.prediciton_b = 
+        let bet = &mut ctx.accounts.bet; // function for prediction B
+        bet.prediciton_b = some(BettingPrediction{
+            player: ctx.accounts.player.key(),
+            price,
+        });
+        bet.state = BetState
       }
 }
 
