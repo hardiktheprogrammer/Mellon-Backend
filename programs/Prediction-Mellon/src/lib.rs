@@ -64,7 +64,21 @@ pub mod prediction_contract {
             player: ctx.accounts.player.key(),
             price,
         });
-        bet.state = BetState
+        bet.state = BetState::Started;
+
+        // transfer the amount to the bet PDA
+        system_program::transfer(
+
+
+
+            CpiContext::new(
+                ctx.accounts.system_program.to_account_info(),
+                system_program::Transfer{
+                    from:ctx.accounts.player.to_account
+                }
+
+            ),
+        )
       }
 }
 
