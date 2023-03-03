@@ -60,6 +60,7 @@ pub mod prediction_contract {
 
 
         let bet = &mut ctx.accounts.bet;
+        let.prediciton_b = 
       }
 }
 
