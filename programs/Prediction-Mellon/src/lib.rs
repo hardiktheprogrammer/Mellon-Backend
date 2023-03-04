@@ -60,7 +60,7 @@ pub mod prediction_contract {
 
 
         let bet = &mut ctx.accounts.bet; // function for prediction B
-        bet.prediciton_b = some(BettingPrediction{
+        bet.prediciton_b = Some(BettingPrediction{
             player: ctx.accounts.player.key(),
             price,
         });
@@ -71,7 +71,7 @@ pub mod prediction_contract {
 
 
 
-            CpiContext::new(
+            CpiContext::new( 
                 ctx.accounts.system_program.to_account_info(),
                 system_program::Transfer{
                     from:ctx.accounts.player.to_account_info(),
@@ -82,10 +82,11 @@ pub mod prediction_contract {
                 },
 
             ),
+            bet.amount,
             
         )?;
 
-        Ok(())
+        Ok((5   ))
       }
 }
 
