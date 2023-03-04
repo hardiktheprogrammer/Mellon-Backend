@@ -86,7 +86,7 @@ pub mod prediction_contract {
             
         )?;
 
-        Ok((5   ))
+        Ok(())
       }
 }
 
