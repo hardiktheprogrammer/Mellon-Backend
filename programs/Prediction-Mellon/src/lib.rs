@@ -76,12 +76,16 @@ pub mod prediction_contract {
                 system_program::Transfer{
                     from:ctx.accounts.player.to_account_info(),
 
+                    to: bet.to_account_info()
+
 
                 },
 
             ),
             
-        )
+        )?;
+
+        Ok(())
       }
 }
 
