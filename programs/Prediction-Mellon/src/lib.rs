@@ -74,10 +74,13 @@ pub mod prediction_contract {
             CpiContext::new(
                 ctx.accounts.system_program.to_account_info(),
                 system_program::Transfer{
-                    from:ctx.accounts.player.to_account
-                }
+                    from:ctx.accounts.player.to_account_info(),
+
+
+                },
 
             ),
+            
         )
       }
 }
