@@ -60,7 +60,7 @@ pub mod prediction_contract {
 
 
         let bet = &mut ctx.accounts.bet; // function for prediction B
-        bet.prediciton_b = Some(BettingPrediction{
+        bet.prediction_b = Some(BettingPrediction{
             player: ctx.accounts.player.key(),
             price,
         });
@@ -86,7 +86,7 @@ pub mod prediction_contract {
             
         )?;
 
-        Ok(())
+    Ok(())
       }
 }
 
@@ -133,7 +133,7 @@ pub struct CreateBet<'info> {
  pub struct EnterBet<'info> {
      #[account(
         mut,
-        SEEDS=[BET_SEED,&bet.id.to_le_bytes()], // bets seeds are the bet seed bytes 
+        seeds=[BET_SEED,&bet.id.to_le_bytes()], // bets seeds are the bet seed bytes 
         bump,
         constraint= validate_enter_bet(&*bet) @ BetError::CannotEnter       // constraints and if  someone enter another bet is not allowed 
     
