@@ -13,3 +13,11 @@ pub fn validate_enter_bet(bet: &Bet) -> bool {
     bet.prediction_b.is_none()
         && (bet.expiry_ts - MINIMUM_REMAINING_TIME_UNTIL_EXPIRY > get_unix_timestamp())
 }
+
+pub fn validate_claim_bet(bet: &Bet) -> bool {
+    match bet.state {
+        BetStated::started => {
+            let current_ts = get_unix_timestamp();
+        }
+    }
+}

@@ -29,6 +29,7 @@ pub struct BettingPrediction {
 
 pub enum BetState {
     Created,
+    Started,
     Expired,
     Draw,
     PlayerAWon,
