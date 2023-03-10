@@ -68,10 +68,7 @@ pub mod prediction_contract {
 
         // transfer the amount to the bet PDA
         system_program::transfer(
-
-
-
-            CpiContext::new( 
+            CpiContext::new(
                 ctx.accounts.system_program.to_account_info(),
                 system_program::Transfer{
                     from:ctx.accounts.player.to_account_info(),

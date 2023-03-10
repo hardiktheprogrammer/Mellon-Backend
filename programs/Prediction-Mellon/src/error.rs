@@ -4,4 +4,8 @@ use anchor_lang::prelude::*;
 pub enum BetError {
     #[msg("cannot enter")]
     CannotEnter,
+    #[msg("cannot claim ")]
+    ConnotClaim,
+    #[msg("cannot close")]
+    CannotClose,
 }
