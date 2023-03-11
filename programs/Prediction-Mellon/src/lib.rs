@@ -154,6 +154,13 @@ pub struct CreateBet<'info> {
         bump,
         constraint=validate,claim_bet(&*bet) @ BetError::CannotClaim,
      )]
-         pub
+        pub bet: Account<'info, Bet>,  //  bet account
+
+         #[account(address = bet.pyth_price_key @ BetError::Invalid Key)] // pyth oracel account
+         pub pyth: AccountInfo<'info>, // pyth account info for the account
+
+         #[account(mut,address = bet.prediction_b.as_ref().unwrap().player)] // both accounts
+
+
  }
 

@@ -10,6 +10,6 @@ pub enum BetError {
     CannotClose,
     #[msg("Given Key for account Does not match")]
     InvalidKey,
-    #[msg("Bet price is too High")]
+    #[msg("Bet price is too High parse to u32")]
     PriceIsHigh,
 }
