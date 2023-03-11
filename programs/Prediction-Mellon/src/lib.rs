@@ -129,22 +129,31 @@ pub struct CreateBet<'info> {
 
  pub struct EnterBet<'info> {
      #[account(
+     mut,
+     seeds = [BET_SEED, & bet.id.to_le_bytes()], // bets seeds are the bet seed bytes
+     bump,
+     constraint = validate_enter_bet(& * bet) @ BetError::CannotEnter       // constraints and if  someone enter another bet is not allowed
+
+
+     )]
+
+     pub bet: Account<'info, Bet>,
+
+     #[account(mut)]
+     pub player: Signer<'info>, //  Player Signer for this account
+
+     pub system_program: Program<'info, System>, // system program
+ }
+
+
+     #[derive(Accounts)]
+     pub struct ClaimBet<'info> {
+     #[account(
         mut,
-        seeds=[BET_SEED,&bet.id.to_le_bytes()], // bets seeds are the bet seed bytes 
+        seeds=[BEET_SEED, &bet.id.to_le_bytes()],
         bump,
-        constraint= validate_enter_bet(&*bet) @ BetError::CannotEnter       // constraints and if  someone enter another bet is not allowed 
-    
-    
-    
-    )]
-
-    pub bet: Account<'info,Bet>,
-
-    #[account(mut)]
-    pub player: Signer<'info>, //  Player Signer for this account
-
-    pub system_program: Program<'info,System> // system program  
-
-
+        constraint=validate,claim_bet(&*bet) @ BetError::CannotClaim,
+     )]
+         pub
  }
 

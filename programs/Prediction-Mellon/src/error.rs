@@ -8,4 +8,8 @@ pub enum BetError {
     ConnotClaim,
     #[msg("cannot close")]
     CannotClose,
+    #[msg("Given Key for account Does not match")]
+    InvalidKey,
+    #[msg("Bet price is too High")]
+    PriceIsHigh,
 }
