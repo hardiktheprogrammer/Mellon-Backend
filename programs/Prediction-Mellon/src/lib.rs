@@ -1,9 +1,9 @@
 mod constants;
+mod error;
 mod state;
 mod utils;
-mod error;
 // use crate::state::*;
-use crate::{constants::*, state::*, utils::*,error::*};
+use crate::{constants::*, error::*, state::*, utils::*};
 use anchor_lang::{prelude::*, system_program};
 use pyth_sdk_solana::load_price_feed_from_account_info;
 
@@ -28,7 +28,7 @@ pub mod prediction_contract {
 
         // Increase the Lea t id on Each bet Creation on the water
 
-        master.last_bet_id += 1; // last bet id 
+        master.last_bet_id += 1; // last bet id
 
         bet.id = master.last_bet_id;
         bet.pyth_price_key = pyth_price_key;
@@ -45,10 +45,10 @@ pub mod prediction_contract {
             // transfer the amount to the bet PDA
             CpiContext::new(
                 ctx.accounts.system_program.to_account_info(), // info putting the player solana on the bet PDA
-                system_program::Transfer { 
+                system_program::Transfer {
                     from: ctx.accounts.player.to_account_info(),
                     to: bet.to_account_info(), //
-                },  
+                },
             ),
             bet.amount,
         )?;
@@ -56,11 +56,11 @@ pub mod prediction_contract {
         Ok(())
     }
 
-      pub fn enter_bet(ctx:Context<EnterBet>,price: f64) -> Result<()> { // enter the bet and the price
-
+    pub fn enter_bet(ctx: Context<EnterBet>, price: f64) -> Result<()> {
+        // enter the bet and the price
 
         let bet = &mut ctx.accounts.bet; // function for prediction B
-        bet.prediction_b = Some(BettingPrediction{
+        bet.prediction_b = Some(BettingPrediction {
             player: ctx.accounts.player.key(),
             price,
         });
@@ -70,23 +70,20 @@ pub mod prediction_contract {
         system_program::transfer(
             CpiContext::new(
                 ctx.accounts.system_program.to_account_info(),
-                system_program::Transfer{
-                    from:ctx.accounts.player.to_account_info(),
+                system_program::Transfer {
+                    from: ctx.accounts.player.to_account_info(),
 
-                    to: bet.to_account_info()
-
-
+                    to: bet.to_account_info(),
                 },
-
             ),
             bet.amount,
-            
         )?;
 
-    Ok(())
-      }
-}
+        Ok(())
+    }
 
+    pub fn claim_bet(ctx: Context<ClaimBet>) -> Result<()> {}
+}
 #[derive(Accounts)] // Account struct
 pub struct CreateMaster<'info> {
     #[account(
@@ -125,10 +122,10 @@ pub struct CreateBet<'info> {
     pub system_program: Program<'info, System>, // System program
 }
 
- #[derive(Accounts)]
+#[derive(Accounts)]
 
- pub struct EnterBet<'info> {
-     #[account(
+pub struct EnterBet<'info> {
+    #[account(
      mut,
      seeds = [BET_SEED, & bet.id.to_le_bytes()], // bets seeds are the bet seed bytes
      bump,
@@ -136,31 +133,34 @@ pub struct CreateBet<'info> {
 
 
      )]
+    pub bet: Account<'info, Bet>,
 
-     pub bet: Account<'info, Bet>,
+    #[account(mut)]
+    pub player: Signer<'info>, //  Player Signer for this account
 
-     #[account(mut)]
-     pub player: Signer<'info>, //  Player Signer for this account
+    pub system_program: Program<'info, System>, // system program
+}
 
-     pub system_program: Program<'info, System>, // system program
- }
-
-
-     #[derive(Accounts)]
-     pub struct ClaimBet<'info> {
-     #[account(
+#[derive(Accounts)]
+pub struct ClaimBet<'info> {
+    #[account(
         mut,
         seeds=[BEET_SEED, &bet.id.to_le_bytes()],
         bump,
         constraint=validate,claim_bet(&*bet) @ BetError::CannotClaim,
      )]
-        pub bet: Account<'info, Bet>,  //  bet account
+    pub bet: Account<'info, Bet>, //  bet account
 
-         #[account(address = bet.pyth_price_key @ BetError::Invalid Key)] // pyth oracel account
-         pub pyth: AccountInfo<'info>, // pyth account info for the account
+    #[account(address = bet.pyth_price_key @ BetError::InvalidKey)] // pyth oracel account
+    pub pyth: AccountInfo<'info>, // pyth account info for the account
 
-         #[account(mut,address = bet.prediction_b.as_ref().unwrap().player)] // both accounts
+    #[account(mut, address = bet.prediction_b.as_ref().unwrap().player)] // both accounts
+    pub player_b: AccountInfo<'info>, // Player B account info
 
+    #[account(mut, address = bet.prediction_a.player)] // Player a
+    pub player_a: AccountInfo<'info>, // player A account Info
 
- }
-
+    #[account(mut)]
+    pub player: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
