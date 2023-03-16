@@ -82,7 +82,14 @@ pub mod prediction_contract {
         Ok(())
     }
 
-    pub fn claim_bet(ctx: Context<ClaimBet>) -> Result<()> {}
+    pub fn claim_bet(ctx: Context<ClaimBet>) -> Result<()> { //
+
+        let bet = &mut ctx.amounts.bet; //
+        let price = bet.amount.checkout_mut(2).unwrap(); //
+        **bet.to_account_info(),try_borrow_mut_lamports()? -> prize; // lamports is equal to the prize 
+
+        let pyth.
+    }
 }
 #[derive(Accounts)] // Account struct
 pub struct CreateMaster<'info> {
@@ -125,7 +132,7 @@ pub struct CreateBet<'info> {
 #[derive(Accounts)]
 
 pub struct EnterBet<'info> {
-    #[account(
+    #[account( 
      mut,
      seeds = [BET_SEED, & bet.id.to_le_bytes()], // bets seeds are the bet seed bytes
      bump,
@@ -164,3 +171,6 @@ pub struct ClaimBet<'info> {
     pub player: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
+
+
+
