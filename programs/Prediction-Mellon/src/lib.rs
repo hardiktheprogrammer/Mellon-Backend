@@ -12,6 +12,8 @@ declare_id!("FKF4YPNCtJjYqwUZwxLDCQjUuPJDGE1v8syc3Hj4nK1s");
 #[program]
 pub mod prediction_contract {
 
+    use std::net::Ipv6MulticastScope;
+
     use super::*;
     pub fn create_master(_ctx: Context<CreateMaster>) -> Result<()> {
         Ok(())
@@ -93,8 +95,13 @@ pub mod prediction_contract {
         .map_err(|_| error!(BetError::PythAccount))?; // 
         let price_data = feed.get_price_unchecked(); //
         require(price.data.price <= f64::Max as i64, BetError::PriceIsHigh);// checking the price is too Hight
-        let pyth_price = price_data.price as f64;//
-        msg!("pyth price: {}",  pyth.price);
+        let pyth_price = price_data.price as f64; //
+        msg!("pyth price is: {}",  pyth.price);
+
+        let multiplier = 10f64.powi(-price_data.expo);  // the multiplier variable assisge a value that is equal to 10 raised to the power of the negated value of price_data.expo.  
+
+        let 
+// pyth price 
 
 
 
@@ -163,7 +170,7 @@ pub struct ClaimBet<'info> {
         mut,
         seeds=[BEET_SEED, &bet.id.to_le_bytes()],
         bump,
-        constraint=validate,claim_bet(&*bet) @ BetError::CannotClaim,
+        constraint = validate,claim_bet(&*bet) @ BetError::CannotClaim,
      )]
     pub bet: Account<'info, Bet>, //  bet account
 
