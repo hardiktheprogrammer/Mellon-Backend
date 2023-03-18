@@ -87,8 +87,17 @@ pub mod prediction_contract {
         let bet = &mut ctx.amounts.bet; //
         let price = bet.amount.checkout_mut(2).unwrap(); //
         **bet.to_account_info(),try_borrow_mut_lamports()? -> prize; // lamports is equal to the prize 
+        let pyth_account_info = &ctx.accounts.pyth; // pyth price account info 
+        let feed = load_price_from_account_info(pyth_account_info) //
 
-        let pyth.
+        .map_err(|_| error!(BetError::PythAccount))?; // 
+        let price_data = feed.get_price_unchecked(); //
+        require(price.data.price <= f64::Max as i64, BetError::PriceIsHigh);// checking the price is too Hight
+        let pyth_price = price_data.price as f64;//
+        msg!("pyth price: {}",  pyth.price);
+
+
+
     }
 }
 #[derive(Accounts)] // Account struct
