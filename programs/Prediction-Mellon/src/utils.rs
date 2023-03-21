@@ -20,7 +20,7 @@ pub fn validate_claim_bet(bet: &Bet) -> bool {
             let current_ts = get_unix_timestamp(); // current timestamp
             let time_passed_since_expiry = current_ts - bet.expiry_ts; // time passed since expiation
             0 < time_passed_since_expiry && time_passed_since_expiry <= bet.expiry_ts
-        },
+        }
         _ => false,
     }
 }

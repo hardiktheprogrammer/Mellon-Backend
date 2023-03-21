@@ -2,6 +2,7 @@ mod constants;
 mod error;
 mod state;
 mod utils;
+
 // use crate::state::*;
 use crate::{constants::*, error::*, state::*, utils::*};
 use anchor_lang::{prelude::*, system_program};
@@ -58,6 +59,7 @@ pub mod prediction_contract {
         Ok(())
     }
 
+
     pub fn enter_bet(ctx: Context<EnterBet>, price: f64) -> Result<()> {
         // enter the bet and the price
 
@@ -92,21 +94,28 @@ pub mod prediction_contract {
         let pyth_account_info = &ctx.accounts.pyth; // pyth price account info 
         let feed = load_price_from_account_info(pyth_account_info) //
 
-        .map_err(|_| error!(BetError::PythAccount))?; // 
-        let price_data = feed.get_price_unchecked(); //
+        .map_err(|_| error!(BetError::NOPythAccount))?; // 
+        let price_data = feed.get_price_unchecked(); // price check 
         require(price.data.price <= f64::Max as i64, BetError::PriceIsHigh);// checking the price is too Hight
         let pyth_price = price_data.price as f64; //
         msg!("pyth price is: {}",  pyth.price);
 
         let multiplier = 10f64.powi(-price_data.expo);  // the multiplier variable assisge a value that is equal to 10 raised to the power of the negated value of price_data.expo.  
 
-        let 
+        let  adjusted_player_a = bet.prediction_a.price * multiplier;
+        let adjusted_player_b = bet.prediction_b.as_ref().unwrap().price * multiplier;
+        msg!("adjusted player A: {}", adjusted_player_a); // adjusted player A
+        msg!("adjusted player B: {}", adjusted_player_b); // adjusted player B
+
+        let abs_player_a = (pyth_price -adjusted_player_a).abs(); // 
+
 // pyth price 
 
 
 
     }
 }
+
 #[derive(Accounts)] // Account struct
 pub struct CreateMaster<'info> {
     #[account(
