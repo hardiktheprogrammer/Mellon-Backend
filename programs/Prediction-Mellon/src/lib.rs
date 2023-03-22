@@ -102,19 +102,24 @@ pub mod prediction_contract {
 
         let multiplier = 10f64.powi(-price_data.expo);  // the multiplier variable assisge a value that is equal to 10 raised to the power of the negated value of price_data.expo.  
 
-        let  adjusted_player_a = bet.prediction_a.price * multiplier;
-        let adjusted_player_b = bet.prediction_b.as_ref().unwrap().price * multiplier;
-        msg!("adjusted player A: {}", adjusted_player_a); // adjusted player A
-        msg!("adjusted player B: {}", adjusted_player_b); // adjusted player B
+       let adjusted_player_a = bet.prediction_a.price * multiplier;
+       let adjusted_player_b = bet.prediction_b.as_ref().unwrap().price * multiplier;
+       msg!("adjusted player A: {}", adjusted_player_a);
+       msg!("adjusted player B: {}", adjusted_player_b);
 
-        let abs_player_a = (pyth_price -adjusted_player_a).abs(); // 
+      if (pyth_price - adjusted_player_a).abs() < (pyth_price - adjusted_player_b).abs() {
+       let prize = calculate_prize();
+       msg!("🤑 Winner is Player A, Sending {} Lamports", prize);
+       bet.state = BetState::PlayerAWon;
+        ctx
+} }                                                     // check if player A is the  Winner or Player B 
 
 // pyth price 
 
 
 
     }
-}
+
 
 #[derive(Accounts)] // Account struct
 pub struct CreateMaster<'info> {
