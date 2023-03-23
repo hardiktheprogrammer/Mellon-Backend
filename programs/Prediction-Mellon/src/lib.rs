@@ -111,8 +111,16 @@ pub mod prediction_contract {
        let prize = calculate_prize();
        msg!("🤑 Winner is Player A, Sending {} Lamports", prize);
        bet.state = BetState::PlayerAWon;
-        ctx
-} }                                                     // check if player A is the  Winner or Player B 
+        ctx // open connection 
+            .accounts
+            .player_a
+            .to_account_info(pyth_price)
+            .try_borrow_mut_lamports()?; += prize;
+}   else if abs_player b = abs_player a {
+    
+}
+
+}                                                     // check if player A is the  Winner or Player B 
 
 // pyth price 
 
