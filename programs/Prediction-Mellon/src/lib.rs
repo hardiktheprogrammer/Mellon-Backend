@@ -114,10 +114,18 @@ pub mod prediction_contract {
         ctx // open connection 
             .accounts
             .player_a
-            .to_account_info(pyth_price)
+            .to_account_info()
             .try_borrow_mut_lamports()?; += prize;
-}   else if abs_player b = abs_player a {
+}   else if abs_player_b = abs_player_a {
+       msg!("🤑 Winner is Player B, Sending {} Lamports", prize);
+       bet.state = BetState::PlayerBWon;
+       ctx
+        .accounts
+        .player_b
+        .to_account_info()
+        .try_borrow_mut_lamports()?; += prize;
     
+
 }
 
 }                                                     // check if player A is the  Winner or Player B 
