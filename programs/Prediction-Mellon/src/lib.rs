@@ -48,7 +48,7 @@ pub mod prediction_contract {
             // transfer the amount to the bet PDA
             CpiContext::new(
                 ctx.accounts.system_program.to_account_info(), // info putting the player solana on the bet PDA
-                system_program::Transfer {
+                system_program::transfer {
                     from: ctx.accounts.player.to_account_info(),
                     to: bet.to_account_info(), //
                 },
@@ -57,6 +57,7 @@ pub mod prediction_contract {
         )?;
 
         Ok(())
+
     }
 
 
@@ -85,18 +86,21 @@ pub mod prediction_contract {
 
         Ok(())
     }
+    // pyth price setup player
+
+// pyth price 
 
     pub fn claim_bet(ctx: Context<ClaimBet>) -> Result<()> { //
 
         let bet = &mut ctx.amounts.bet; //
-        let price = bet.amount.checkout_mut(2).unwrap(); //
-        **bet.to_account_info(),try_borrow_mut_lamports()? -> prize; // lamports is equal to the prize 
+        let price = bet.amount.checkout_mut(2).unwrap();//
+        **bet.to_account_info().try_borrow_mut_lamports()?; -= prize; // lamports is equal to the prize 
         let pyth_account_info = &ctx.accounts.pyth; // pyth price account info 
-        let feed = load_price_from_account_info(pyth_account_info) //
+        let feed = load_price_from_account_info(pyth_account_info)//
 
         .map_err(|_| error!(BetError::NOPythAccount))?; // 
         let price_data = feed.get_price_unchecked(); // price check 
-        require(price.data.price <= f64::Max as i64, BetError::PriceIsHigh);// checking the price is too Hight
+        require!(price_data.price <= f64::Max as i64, BetError::PriceIsHigh);// checking the price is too Hight
         let pyth_price = price_data.price as f64; //
         msg!("pyth price is: {}",  pyth.price);
 
@@ -109,32 +113,49 @@ pub mod prediction_contract {
 
       if (pyth_price - adjusted_player_a).abs() < (pyth_price - adjusted_player_b).abs() {
        let prize = calculate_prize();
-       msg!("🤑 Winner is Player A, Sending {} Lamports", prize);
+       msg!("🤑 Winner is Player A, Sending {} lamports", prize);
        bet.state = BetState::PlayerAWon;
-        ctx // open connection 
+        **ctx // open connection 
             .accounts
             .player_a
             .to_account_info()
-            .try_borrow_mut_lamports()?; += prize;
-}   else if abs_player_b = abs_player_a {
-       msg!("🤑 Winner is Player B, Sending {} Lamports", prize);
+            .try_borrow_mut_lamports()?; =+ prize;
+}   else if abs_player_b < abs_player_a {
+       msg!("🤑 Winner is Player B, Sending {} lamports", prize);
        bet.state = BetState::PlayerBWon;
-       ctx
+       **ctx
         .accounts
         .player_b
         .to_account_info()
-        .try_borrow_mut_lamports()?; += prize;
-    
+        .try_borrow_mut_lamports()?; =+ prize; // Try Borrow lamports
 
+
+//   check if player A is the  Winner or Player B 
+// setup Draw Match  
+} else { 
+    let draw_match = bet.amount; //real Price
+    msg!("Draw! Sending bet:{} lamports", draw_amount);
+    bet.state = BetState::Draw; 
+    // for player A
+    **ctx
+        .accounts
+        .player_a
+        .to_account_info()
+        .try_borrow_mut_lamports()?; =+ draw_match; // Try Borrow Lamports
+//  for Player B 
+    **ctx 
+        .accounts
+        .player_b
+        .to_account_info()
+        .try_borrow_mut_lamports()?; =+ draw_match; // Try Borrow Lamports
+    }
+    
+    
+    Ok(()) // Ok
 }
 
-}                                                     // check if player A is the  Winner or Player B 
-
-// pyth price 
-
-
-
-    }
+pub fn class_bet
+}
 
 
 #[derive(Accounts)] // Account struct
@@ -161,7 +182,7 @@ pub struct CreateBet<'info> {
         init,
         payer=player,
         space=8+8+32+8+8+32+8+1+32+8+1,
-        seeds=[BET_SEED, &(master.last_bet_id + 1).to_le_bytes() ],
+        seeds=[BET_SEED, &(master.last_bet_id + 1).to_le_bytes()],
         bump
     )]
     pub bet: Account<'info, Bet>, // Bet Account
@@ -182,7 +203,7 @@ pub struct EnterBet<'info> {
      mut,
      seeds = [BET_SEED, & bet.id.to_le_bytes()], // bets seeds are the bet seed bytes
      bump,
-     constraint = validate_enter_bet(& * bet) @ BetError::CannotEnter       // constraints and if  someone enter another bet is not allowed
+     constraint = validate_enter_bet(&*bet) @ BetError::CannotEnter       // constraints and if  someone enter another bet is not allowed
 
 
      )]
@@ -198,10 +219,10 @@ pub struct EnterBet<'info> {
 pub struct ClaimBet<'info> {
     #[account(
         mut,
-        seeds=[BEET_SEED, &bet.id.to_le_bytes()],
+        seeds=[BET_SEED, &bet.id.to_le_bytes()],
         bump,
-        constraint = validate,claim_bet(&*bet) @ BetError::CannotClaim,
-     )]
+        constraint = validate_claim_bet(&*bet) @ BetError::CannotClaim, 
+     )]                             
     pub bet: Account<'info, Bet>, //  bet account
 
     #[account(address = bet.pyth_price_key @ BetError::InvalidKey)] // pyth oracel account
@@ -215,7 +236,7 @@ pub struct ClaimBet<'info> {
 
     #[account(mut)]
     pub player: Signer<'info>,
-    pub system_program: Program<'info, System>,
+    pub system_program: Program<'info, System>
 }
 
 

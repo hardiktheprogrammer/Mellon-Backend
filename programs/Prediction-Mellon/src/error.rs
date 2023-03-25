@@ -5,7 +5,7 @@ pub enum BetError {
     #[msg("cannot enter")]
     CannotEnter,
     #[msg("cannot claim ")]
-    ConnotClaim,
+    CannotClaim,
     #[msg("cannot close")]
     CannotClose,
     #[msg("Given Key for account Does not match")]
