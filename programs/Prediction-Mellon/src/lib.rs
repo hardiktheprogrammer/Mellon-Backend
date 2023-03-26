@@ -249,7 +249,9 @@ pub struct CloseBet<'info> {
     seeds = [BET_SEED,&bet.id.to_le_bytes()],
     bump,
     close = player, // 
-    constraint = validation_close_bet(&*bet, player.key(())  )] // 
+    constraint = validate_close_bet(&*bet, player.key()) @ BetError::CannotClose,
+
+)] // 
 
 }
 

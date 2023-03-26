@@ -24,3 +24,24 @@ pub fn validate_claim_bet(bet: &Bet) -> bool {
         _ => false,
     }
 }
+
+pub fn validate_close_bet(bet: *Bet, user_key: Pubkey) -> {  
+
+    match.bet.state {
+        BetState::Create => bet.prediction_a.player => user_key, // User Key 
+        BetState::Started=> {
+            is_player(bet, user_key) // check user is player
+
+            && get_unix_timestamp(bet, user_key)
+
+
+        }
+    }
+
+
+}
+
+fn is_player(bet: &Bet,user_key:Pubkey) -> bool {     
+    bet.prediction_a.player == user_key
+    || (bet.prediction_b.is._some() && bet.prediction_b.as_ref().unwrap().player == user_key)   
+}
