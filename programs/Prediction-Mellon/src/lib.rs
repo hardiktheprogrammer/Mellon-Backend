@@ -154,7 +154,10 @@ pub mod prediction_contract {
     Ok(()) // Ok
 }
 
-pub fn class_bet
+// close  bet Account
+pub fn close_bet(_ctx) -> Result<()> {
+
+}
 }
 
 
@@ -239,5 +242,15 @@ pub struct ClaimBet<'info> {
     pub system_program: Program<'info, System>
 }
 
+#[derive(Accounts)]
+pub struct CloseBet<'info> {
+    #[account( // mutable 
+    mut,
+    seeds = [BET_SEED,&bet.id.to_le_bytes()],
+    bump,
+    close = player, // 
+    constraint = validation_close_bet(&*bet, player.key(())  )] // 
+
+}
 
 
