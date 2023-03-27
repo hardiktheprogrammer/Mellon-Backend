@@ -25,7 +25,7 @@ pub fn validate_claim_bet(bet: &Bet) -> bool {
     }
 }
 
-pub fn validate_close_bet(bet: *Bet, user_key: Pubkey) -> {  
+pub fn validate_close_bet(bet: &Bet, user_key: Pubkey) -> {  
 
     match.bet.state {
         BetState::Created => bet.prediction_a.player => user_key, // User Key 

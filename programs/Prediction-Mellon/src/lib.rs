@@ -205,7 +205,7 @@ pub struct CreateBet<'info> {
 pub struct EnterBet<'info> {
     #[account( 
      mut,
-     seeds = [BET_SEED, & bet.id.to_le_bytes()], // bets seeds are the bet seed bytes
+     seeds = [BET_SEED, &bet.id.to_le_bytes()], // bets seeds are the bet seed bytes
      bump,
      constraint = validate_enter_bet(&*bet) @ BetError::CannotEnter       // constraints and if  someone enter another bet is not allowed
 
@@ -216,7 +216,7 @@ pub struct EnterBet<'info> {
     #[account(mut)]
     pub player: Signer<'info>, //  Player Signer for this account
 
-    pub system_program: Program<'info, System>, // system program
+    pub system_program: Program<'info, System> // system program
 }
 
 #[derive(Accounts)]
@@ -225,9 +225,9 @@ pub struct ClaimBet<'info> {
         mut,
         seeds=[BET_SEED, &bet.id.to_le_bytes()],
         bump,
-        constraint = validate_claim_bet(&*bet) @ BetError::CannotClaim, 
+        constraint = validate_claim_bet(&*bet) @ BetError::CannotClaim 
      )]                             
-    pub bet: Account<'info, Bet>, //  bet account
+    pub bet: Account<'info,Bet>, //  bet account
 
     #[account(address = bet.pyth_price_key @ BetError::InvalidKey)] // pyth oracel account
     pub pyth: AccountInfo<'info>, // pyth account info for the account
@@ -250,11 +250,11 @@ pub struct CloseBet<'info> {
     seeds = [BET_SEED,&bet.id.to_le_bytes()],
     bump,
     close = player, // 
-    constraint = validate_close_bet(&*bet, player.key()) @ BetError::CannotClose,
+    constraint = validate_close_bet(&*bet, player.key()) @ BetError::CannotClose
 
 )] // 
 
-pub bet::Account<'info,Bet>,
+pub bet: Account<'info,Bet>,
 #[account(mut)]
 pub player: Signer<'info>,
 pub system_program: Program<'info, System>,
