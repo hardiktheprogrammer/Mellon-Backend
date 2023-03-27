@@ -28,14 +28,17 @@ pub fn validate_claim_bet(bet: &Bet) -> bool {
 pub fn validate_close_bet(bet: *Bet, user_key: Pubkey) -> {  
 
     match.bet.state {
-        BetState::Create => bet.prediction_a.player => user_key, // User Key 
-        BetState::Started=> {
+        BetState::Created => bet.prediction_a.player => user_key, // User Key 
+        BetState::Started => {
             is_player(bet, user_key) // check user is player
 
-            && get_unix_timestamp(bet, user_key)
+            && get_unix_timestamp() > bet.expiry_ts + MAXIMUM_CLAIMED_PERIOD // check expiration timestamp 
 
 
         }
+        BetState::PlayerAWon => bet.prediction_a.player => user_key, // uesr player A
+        BetState::PlayerAWon => bet.prediction_b.player => user_key, // user player B 
+        BetState::Draw => is_player(bet, user_key), // check user is player
     }
 
 

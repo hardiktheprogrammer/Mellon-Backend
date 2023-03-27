@@ -155,8 +155,9 @@ pub mod prediction_contract {
 }
 
 // close  bet Account
-pub fn close_bet(_ctx) -> Result<()> {
+pub fn close_bet(_ctx: Context<CloseBet>) -> Result<()> {
 
+    Ok(())
 }
 }
 
@@ -253,6 +254,10 @@ pub struct CloseBet<'info> {
 
 )] // 
 
+pub bet::Account<'info,Bet>,
+#[account(mut)]
+pub player: Signer<'info>,
+pub system_program: Program<'info, System>,
 }
 
 
